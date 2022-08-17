@@ -20,6 +20,16 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        other.transform.GetComponent<ShopkeeperController>().onInteractRange = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        other.transform.GetComponent<ShopkeeperController>().onInteractRange = false;
+    }
+
     private void PlayerMovement()
     {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
