@@ -5,7 +5,15 @@ using UnityEngine;
 public class ShopkeeperController : MonoBehaviour
 {
 
-    public bool onInteractRange = false;
+    public bool onInteractRange;
+
+    private string _dialogPath;
+
+    private void Start()
+    {
+        onInteractRange = false;
+        _dialogPath = "./Assets/Dialogs/shopkeeper.txt";
+    }
 
     private void Update()
     {
@@ -20,7 +28,7 @@ public class ShopkeeperController : MonoBehaviour
     {
         if (onInteractRange)
         {
-            Debug.Log("Hey! I'm the shopkeeper.");
+            DialogManager.Instance.StartDialog(_dialogPath);
         }
     }
 }
