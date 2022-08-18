@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public float horizontalLeftOffset;
     public float horizontalRightOffset;
     public float verticalUpOffset;
     public float verticalDownOffset;
 
     public float speed = 1;
-
-    private float _verticalInput;
-    private float _horizontalInput;
-
-
-    void Update()
-    {
-        PlayerMovement();
-    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -30,24 +28,19 @@ public class PlayerController : MonoBehaviour
         other.transform.GetComponent<ShopkeeperController>().onInteractRange = false;
     }
 
-    private void PlayerMovement()
+    public void PlayerMovement(float horizontalInput, float verticalInput)
     {
-        _horizontalInput = Input.GetAxisRaw("Horizontal");
-        _verticalInput = Input.GetAxisRaw("Vertical");
-
-        if ((_horizontalInput == 1 && transform.position.x >= horizontalRightOffset)
-          || _horizontalInput == -1 && transform.position.x <= horizontalLeftOffset)
+        if (transform.position.x >= horizontalRightOffset || transform.position.x <= horizontalLeftOffset)
         {
-            _horizontalInput = 0;
+            horizontalInput = 0;
         }
 
-        if ((_verticalInput == 1 && transform.position.y >= verticalUpOffset)
-        || _verticalInput == -1 && transform.position.y <= verticalDownOffset)
+        if (transform.position.y >= verticalUpOffset || transform.position.y <= verticalDownOffset)
         {
-            _verticalInput = 0;
+            verticalInput = 0;
         }
 
-        Vector3 direction = new Vector3(_horizontalInput, _verticalInput, 0);
+        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
         transform.Translate(direction * Time.deltaTime * speed, Space.World);
     }
 }

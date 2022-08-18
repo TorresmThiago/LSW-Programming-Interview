@@ -20,36 +20,23 @@ public class DialogManager : MonoBehaviour
     public string[] _lines;
     private int _textIndex;
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (textComponent.text == _lines[_textIndex])
-            {
-                NextLine();
-            }
-            else
-            {
-                StopAllCoroutines();
-                textComponent.text = _lines[_textIndex];
-            }
-        }
-    }
-
     public void StartDialog(string path)
     {
         if (!dialogBox.gameObject.activeSelf)
         {
             _textIndex = 0;
             _lines = System.IO.File.ReadAllLines(path);
-            textComponent.text = string.Empty;
+
             dialogBox.gameObject.SetActive(true);
+            textComponent.text = string.Empty;
+
             StartCoroutine(TypeLine());
         }
     }
 
     public void NextLine()
     {
+
         if (_textIndex < _lines.Length - 1)
         {
             _textIndex++;
@@ -64,12 +51,28 @@ public class DialogManager : MonoBehaviour
         }
     }
 
+    public void SkipText()
+    {
+        if (dialogBox.gameObject.activeSelf)
+        {
+            if (textComponent.text == _lines[_textIndex])
+            {
+                NextLine();
+            }
+            else
+            {
+                textComponent.text = _lines[_textIndex];
+                StopAllCoroutines();
+            }
+        }
+    }
+
     IEnumerator TypeLine()
     {
         foreach (char character in _lines[_textIndex].ToCharArray())
         {
-            textComponent.text += character;
             yield return new WaitForSeconds(textSpeed);
+            textComponent.text += character;
         }
     }
 }

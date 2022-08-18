@@ -4,24 +4,21 @@ using UnityEngine;
 
 public class ShopkeeperController : MonoBehaviour
 {
+    public static ShopkeeperController Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public bool onInteractRange;
 
-    private string _dialogPath;
+    public string _dialogPath;
 
     private void Start()
     {
         onInteractRange = false;
         _dialogPath = "./Assets/Dialogs/shopkeeper.txt";
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            ShopkeeperInteraction();
-        }
-
     }
 
     public void ShopkeeperInteraction()
