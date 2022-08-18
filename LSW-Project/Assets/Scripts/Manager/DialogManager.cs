@@ -16,28 +16,24 @@ public class DialogManager : MonoBehaviour
     public TextMeshProUGUI textComponent;
     public float textSpeed;
     public Transform dialogBox;
+    public string[] lines;
 
-    public string[] _lines;
     private int _textIndex;
 
-    public void StartDialog(string path)
+    public void StartDialog()
     {
         if (!dialogBox.gameObject.activeSelf)
         {
             _textIndex = 0;
-            _lines = System.IO.File.ReadAllLines(path);
-
             dialogBox.gameObject.SetActive(true);
             textComponent.text = string.Empty;
-
             StartCoroutine(TypeLine());
         }
     }
 
     public void NextLine()
     {
-
-        if (_textIndex < _lines.Length - 1)
+        if (_textIndex < lines.Length - 1)
         {
             _textIndex++;
             textComponent.text = string.Empty;
@@ -46,7 +42,7 @@ public class DialogManager : MonoBehaviour
         else
         {
             _textIndex = 0;
-            _lines = null;
+            lines = null;
             dialogBox.gameObject.SetActive(false);
         }
     }
@@ -55,13 +51,13 @@ public class DialogManager : MonoBehaviour
     {
         if (dialogBox.gameObject.activeSelf)
         {
-            if (textComponent.text == _lines[_textIndex])
+            if (textComponent.text == lines[_textIndex])
             {
                 NextLine();
             }
             else
             {
-                textComponent.text = _lines[_textIndex];
+                textComponent.text = lines[_textIndex];
                 StopAllCoroutines();
             }
         }
@@ -69,7 +65,7 @@ public class DialogManager : MonoBehaviour
 
     IEnumerator TypeLine()
     {
-        foreach (char character in _lines[_textIndex].ToCharArray())
+        foreach (char character in lines[_textIndex].ToCharArray())
         {
             yield return new WaitForSeconds(textSpeed);
             textComponent.text += character;

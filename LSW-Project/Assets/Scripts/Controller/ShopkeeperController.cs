@@ -25,7 +25,8 @@ public class ShopkeeperController : MonoBehaviour
     {
         if (onInteractRange)
         {
-            DialogManager.Instance.StartDialog(_dialogPath);
+            DialogManager.Instance.lines = System.IO.File.ReadAllLines(_dialogPath);
+            DialogManager.Instance.StartDialog();
         }
     }
 }

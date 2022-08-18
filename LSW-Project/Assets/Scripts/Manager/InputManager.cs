@@ -17,7 +17,12 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("space"))
         {
             ShopkeeperController.Instance.ShopkeeperInteraction();
-            DialogManager.Instance.SkipText();
+
+            if (DialogManager.Instance.dialogBox.gameObject.activeSelf)
+            {
+                DialogManager.Instance.SkipText();
+            }
+
         }
 
         // Player related Actions
