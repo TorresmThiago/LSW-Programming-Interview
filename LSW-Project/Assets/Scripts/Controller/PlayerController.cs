@@ -11,14 +11,24 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 1;
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        other.transform.GetComponent<ShopkeeperController>().onInteractRange = true;
-    }
+    private void OnTriggerEnter2D(Collider2D other) { PlayerInteractRange(other.transform, true); }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other) { PlayerInteractRange(other.transform, false); }
+
+    public void PlayerInteractRange(Transform other, bool collision)
     {
-        other.transform.GetComponent<ShopkeeperController>().onInteractRange = false;
+        switch (other.name)
+        {
+            case "Shopkeeper":
+                other.GetComponent<ShopkeeperController>().onInteractRange = collision;
+
+                break;
+            case "ShopOptions":
+                other.GetComponent<ShopOptionsController>().onInteractRange = collision;
+                other.GetComponent<ShopOptionsController>().CloseOptions();
+                break;
+            default: break;
+        }
     }
 
     public void PlayerMovement(float horizontalInput, float verticalInput)

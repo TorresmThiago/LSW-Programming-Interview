@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
 
     public PlayerController player;
     public ShopkeeperController shopkeeper;
+    public ShopOptionsController shopOptions;
 
     public DialogManager dialogManager;
 
@@ -15,6 +16,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("space"))
         {
             shopkeeper.ShopkeeperInteraction();
+            shopOptions.OptionsInteraction();
 
             if (dialogManager.hasActiveDialog)
             {
