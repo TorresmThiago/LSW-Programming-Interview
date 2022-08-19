@@ -4,29 +4,26 @@ using UnityEngine;
 
 public class ShopkeeperController : MonoBehaviour
 {
-    public static ShopkeeperController Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     public bool onInteractRange;
 
-    public string _dialogPath;
+    public DialogManager dialogManager;
+
+    private string _dialogPath;
+    private string[] _lines;
 
     private void Start()
     {
         onInteractRange = false;
         _dialogPath = "./Assets/Dialogs/shopkeeper.txt";
+        _lines = System.IO.File.ReadAllLines(_dialogPath);
     }
 
     public void ShopkeeperInteraction()
     {
-        if (onInteractRange)
+        if (onInteractRange && dialogManager.lines.Length == 0)
         {
-            DialogManager.Instance.lines = System.IO.File.ReadAllLines(_dialogPath);
-            DialogManager.Instance.StartDialog();
+            dialogManager.lines = _lines;
+            dialogManager.StartDialog();
         }
     }
 }

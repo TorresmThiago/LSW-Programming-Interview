@@ -4,31 +4,27 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public static InputManager Instance;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+    public PlayerController player;
+    public ShopkeeperController shopkeeper;
+
+    public DialogManager dialogManager;
 
     void Update()
     {
-        // DialogBox related actions
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("space"))
         {
-            ShopkeeperController.Instance.ShopkeeperInteraction();
+            shopkeeper.ShopkeeperInteraction();
 
-            if (DialogManager.Instance.dialogBox.gameObject.activeSelf)
+            if (dialogManager.hasActiveDialog)
             {
-                DialogManager.Instance.SkipText();
+                dialogManager.UpdateDialog();
             }
-
         }
 
-        // Player related Actions
         float horizontalInput = Input.GetButton("Horizontal") ? Input.GetAxisRaw("Horizontal") : 0;
         float verticalInput = Input.GetButton("Vertical") ? Input.GetAxisRaw("Vertical") : 0;
 
-        PlayerController.Instance.PlayerMovement(horizontalInput, verticalInput);
+        player.PlayerMovement(horizontalInput, verticalInput);
     }
 }

@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     public float horizontalLeftOffset;
     public float horizontalRightOffset;
     public float verticalUpOffset;
