@@ -21,6 +21,7 @@ public class OptionsManager : MonoBehaviour
             Button currentOption = Instantiate(optionButton, transform.position, Quaternion.identity, optionsBox);
             currentOption.GetComponentInChildren<TextMeshProUGUI>().SetText(option);
             currentOption.onClick.AddListener(delegate { ChooseOption(option); });
+
         }
 
         StartSelection();

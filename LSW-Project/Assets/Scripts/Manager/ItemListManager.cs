@@ -4,62 +4,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
+
 
 public class ItemListManager : MonoBehaviour
 {
 
-    public BuyListController buyList;
-    public SellListController sellList;
+    public ItemListController itemList;
     public Transform listContainer;
+    public Transform parent;
+    public Button buttonPrefab;
 
-    private Button item;
     private string title;
-    private string[] inventory;
+    private List<InventoryItem> inventory;
 
     public void CreateList(ListType listType)
     {
 
-        listContainer.parent.parent.gameObject.SetActive(true);
+        parent.gameObject.SetActive(true);
+        itemList.listType = listType;
+        itemList.SetListParameters(ref title, ref inventory);
 
-        switch (listType)
+        for (int index = 0; index < inventory.Count; index++)
         {
-            case ListType.Buy:
-                item = buyList.buyButton;
-                inventory = buyList.buyInventory;
-                title = buyList.title;
-                break;
-            case ListType.Sell:
-                item = sellList.sellButton;
-                inventory = sellList.sellInventory;
-                title = buyList.title;
-                break;
-            default:
-                item = null;
-                inventory = null;
-                title = null;
-                break;
+            Button currentOption = Instantiate(buttonPrefab, transform.position, Quaternion.identity, listContainer);
+            currentOption.GetComponentInChildren<TextMeshProUGUI>().SetText(inventory[index].Name);
+            currentOption.onClick.AddListener(delegate { SelectListItem(currentOption); });
         }
-
-        if (item != null || inventory != null || title != null)
-        {
-            for (int index = 0; index < inventory.Length; index++)
-            {
-                Button currentOption = Instantiate(item, transform.position, Quaternion.identity, listContainer);
-                currentOption.GetComponentInChildren<TextMeshProUGUI>().SetText(inventory[index]);
-                currentOption.onClick.AddListener(delegate { ChooseListItem(); });
-            }
-        }
-
     }
 
-    public void ChooseListItem()
+    public void SelectListItem(Button listItem)
     {
-        listContainer.parent.parent.gameObject.SetActive(false);
+        itemList.ExecuteAction(listItem);
+
+        parent.gameObject.SetActive(false);
         foreach (Transform child in listContainer)
+        {
             Destroy(child.gameObject);
+        }
     }
 }
-
 
 public enum ListType
 {
