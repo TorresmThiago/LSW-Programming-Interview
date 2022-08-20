@@ -10,6 +10,9 @@ public class OptionsManager : MonoBehaviour
 
     public Button optionButton;
     public Transform optionsBox;
+    public Transform optionsMenu;
+
+    public ItemListManager itemListManager;
 
     public void CreateSelection(string[] choices)
     {
@@ -18,7 +21,6 @@ public class OptionsManager : MonoBehaviour
             Button currentOption = Instantiate(optionButton, transform.position, Quaternion.identity, optionsBox);
             currentOption.GetComponentInChildren<TextMeshProUGUI>().SetText(option);
             currentOption.onClick.AddListener(delegate { ChooseOption(option); });
-
         }
 
         StartSelection();
@@ -26,7 +28,7 @@ public class OptionsManager : MonoBehaviour
 
     public void StartSelection()
     {
-        gameObject.SetActive(true);
+        optionsMenu.gameObject.SetActive(true);
     }
 
     public void ChooseOption(string chosenOption)
@@ -34,20 +36,21 @@ public class OptionsManager : MonoBehaviour
         switch (chosenOption)
         {
             case "Buy":
-                Debug.Log("Time to spend some moneyyy");
+                itemListManager.CreateList(ListType.Buy);
                 break;
 
             case "Sell":
-                Debug.Log("Hard working boy, hm?");
+                itemListManager.CreateList(ListType.Sell);
                 break;
 
             case "Cancel":
-                gameObject.SetActive(false);
                 foreach (Transform child in optionsBox)
                     Destroy(child.gameObject);
                 break;
             default: break;
         }
+
+        optionsMenu.gameObject.SetActive(false);
 
     }
 
